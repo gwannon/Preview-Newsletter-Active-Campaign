@@ -1,5 +1,4 @@
-Este plugin se conecta a la API de Active Campaign y saca los últimas campañas que cumplan en el nombre alguna de las expresiones regualres (separadas por comas)
-que contienen el shortocede [previewnewsletters]. Crea un grid con el asunto de la campaña y su imagen y lo enlaza a una previsialización  
+Este plugin se conecta a la API de Active Campaign y saca los últimas campañas que cumplan en el nombre alguna de las expresiones regulares (separadas por comas) que contienen el shortcode [previewnewsletters]. Crea un grid con el asunto de la campaña y su imagen y lo enlaza a una previsualización. 
 
 Ejemplo de código corto:
 
