@@ -57,8 +57,7 @@ function pnlac_shortcode($params = array(), $content) {
 	$api_key = get_option("_pnlac_api_key");
 	$link = $api_url."/api/3/campaigns?orders[sdate]=DESC&offset=0&limit=10";
 	$items = array();
-  $json = pnlac_curl_call($link, $api_key);
-	//"BEEN-([0-9]*)", "SPRI-([0-9]*)-es", "SPRI-ENTREVISTAS-([0-9]*)-es", "ADI-([0-9]*)-es"
+	$json = pnlac_curl_call($link, $api_key);
 	$codes = explode(",", $content);
 	foreach ($codes as $key => $code) {
 		foreach($json->campaigns as $campaign) {
@@ -73,28 +72,28 @@ function pnlac_shortcode($params = array(), $content) {
 	$html .= "</div><style>
 	#newsletters {
 		display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-content: flex-start;
-    justify-content: center;
-    align-items: stretch;
-    gap: 20px;
+		flex-direction: row;
+		flex-wrap: wrap;
+		align-content: flex-start;
+		justify-content: center;
+		align-items: stretch;
+		gap: 20px;
 	}
 	
 	#newsletters > a {
 		display: block;
-    width: calc(100% - 20px);
-    background: #f00 none no-repeat;
-    border: 1px solid #f00;
-    font-weight: 600;
-    padding: 10px 20px 460px;
-    font-size: 16px;
-    color: #fff;
-    transition: background 0.3s;
-    margin: 0px 0px 5px 0px;
-    text-decoration: none;
-    position: relative;
-    box-sizing: border-box;
+		width: calc(100% - 20px);
+		background: #f00 none no-repeat;
+		border: 1px solid #f00;
+		font-weight: 600;
+		padding: 10px 20px 460px;
+		font-size: 16px;
+		color: #fff;
+		transition: background 0.3s;
+		margin: 0px 0px 5px 0px;
+		text-decoration: none;
+		position: relative;
+		box-sizing: border-box;
 	}
 
 	@media (min-width: 650px) {
@@ -118,7 +117,7 @@ function pnlac_shortcode($params = array(), $content) {
 		bottom: 0px;
 		left: 0px;
 		height: 450px;
-    width: 100%;
+		width: 100%;
 	}
 	</style>";
 	return $html;
@@ -143,7 +142,7 @@ function pnlac_page_settings() {
 		<input type="text" name="_pnlac_api_key" value="<?php echo get_option("_pnlac_api_key"); ?>" />
 		<h2><?php _e("AC Api URL", 'pnlac'); ?>:</h2>
 		<input type="text" name="_pnlac_api_url" value="<?php echo get_option("_pnlac_api_url"); ?>" /><br/><br/>
-		<input type="submit" name="send" class="button button-primary" value="<?php _e("Guardar", "especialista-wp-mapa-web"); ?>" />
+		<input type="submit" name="send" class="button button-primary" value="<?php _e("Guardar", 'pnlac'); ?>" />
 	</form>
 	<?php
 }
