@@ -43,7 +43,7 @@ function pnlac_preview_newsletter(){
 				break;
 			}
 		}
-		wp_die();
+		die;
 	}
 }
 add_action( "template_redirect", "pnlac_preview_newsletter" );
