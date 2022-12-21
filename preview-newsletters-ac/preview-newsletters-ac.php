@@ -1,13 +1,13 @@
 <?php
 /**
  * @package PreviewNewslettersAC
- * @version 1.1
+ * @version 1.3
  */
 /*
 Plugin Name: Preview Newsletter Active Campaign
 Plugin URI: https://github.com/gwannon/Preview-Newsletter-Active-Campaign
 Description: Este plugin saca los últimos newsletter de Active Campaign para que puedan ser visualizados por los usuarios usando el código corto [previewnewsletters].
-Version: 1.1
+Version: 1.3
 Author: @Gwannon
 Author URI: https://github.com/gwannon
 License: GPLv2 or later
@@ -29,11 +29,19 @@ function pnlac_curl_call($link, $api_key) {
   return $json;
 }
 
+function pnlac_deactivate_on_page() {
+	if (is_page() && isset($_REQUEST['preview_newsletter'])) {
+		add_filter( 'do_rocket_lazyload', '__return_false' );
+	}
+}
+add_filter( 'wp', __NAMESPACE__ . '\pnlac_deactivate_on_page' );
+
 function pnlac_preview_newsletter(){
 	if(isset($_REQUEST['preview_newsletter'])) {
+		
 		$api_url = get_option("_pnlac_api_url");
 		$api_key = get_option("_pnlac_api_key");
-		$link = $api_url."/api/3/campaigns?orders[sdate]=DESC&offset=0&limit=10";
+		$link = $api_url."/api/3/campaigns?orders[sdate]=DESC&offset=0&limit=100";
 		$json = pnlac_curl_call($link, $api_key);
 		foreach($json->campaigns as $campaign) {
 			if(md5($campaign->name) == $_REQUEST['preview_newsletter']) {
