@@ -1,13 +1,13 @@
 <?php
 /**
  * @package PreviewNewslettersAC
- * @version 1.0
+ * @version 1.1
  */
 /*
 Plugin Name: Preview Newsletter Active Campaign
 Plugin URI: https://github.com/gwannon/Preview-Newsletter-Active-Campaign
 Description: Este plugin saca los últimos newsletter de Active Campaign para que puedan ser visualizados por los usuarios usando el código corto [previewnewsletters].
-Version: 1.0
+Version: 1.1
 Author: @Gwannon
 Author URI: https://github.com/gwannon
 License: GPLv2 or later
@@ -54,16 +54,18 @@ function pnlac_shortcode($params = array(), $content) {
 	$html = "<div id='newsletters'>";
 	$api_url = get_option("_pnlac_api_url");
 	$api_key = get_option("_pnlac_api_key");
-	$link = $api_url."/api/3/campaigns?orders[sdate]=DESC&offset=0&limit=10";
+	$link = $api_url."/api/3/campaigns?orders[sdate]=DESC&offset=0&limit=100";
 	$items = array();
 	$json = pnlac_curl_call($link, $api_key);
 	$codes = explode(",", $content);
+	$counter = 0;
 	foreach ($codes as $key => $code) {
 		foreach($json->campaigns as $campaign) {
 			if(preg_match("/".$code."/", $campaign->name)) {
 				unset ($codes[$key]);
 				$message = pnlac_curl_call($campaign->links->campaignMessage, $api_key);
 				$html .= "<a href='".(parse_url(get_the_permalink(), PHP_URL_QUERY) ? '&' : '?') . "preview_newsletter=". md5($campaign->name). "'>".$message->campaignMessage->subject."<span style='background-image: url(".$message->campaignMessage->screenshot.");'></span></a>";
+				$counter ++;
 				break;
 			}
 		}
@@ -82,8 +84,8 @@ function pnlac_shortcode($params = array(), $content) {
 	#newsletters > a {
 		display: block;
 		width: calc(100% - 20px);
-		background: #f00 none no-repeat;
-		border: 1px solid #f00;
+		background: #000 none no-repeat;
+		border: 1px solid #000;
 		font-weight: 600;
 		padding: 10px 20px 460px;
 		font-size: 16px;
@@ -99,17 +101,18 @@ function pnlac_shortcode($params = array(), $content) {
 		#newsletters > a { width: calc(50% - 20px); }
 	}
 	@media (min-width: 1200px) {
-		#newsletters > a { width: calc(25% - 20px); }
+		#newsletters > a { width: calc(".round((100 / $counter), 2)."% - 20px); }
 	}
 
 	#newsletters > a:hover {
 		background-color: #333;
 		border-color: #333;
+		color: #fff !important
 	}
 
 	#newsletters > a > span {
 		display: block;
-		background: #f00 none no-repeat;
+		background: #fff none no-repeat;
 		background-size: 100% auto;
 		height: 450px;
 		position: absolute;
